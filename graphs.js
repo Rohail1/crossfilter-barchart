@@ -2,15 +2,6 @@
  * Created by Rohail on 7/6/2017.
  */
 
-
-function print_filter(filter) {
-  let f=eval(filter);
-  if (typeof(f.length) != "undefined") {}else{}
-  if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
-  if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
-  console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
-}
-
 let data = [
   {date: "2011-11-14T16:17:54Z", quantity: 2, total: 190, tip: 100, type: "tab"},
   {date: "2011-11-14T16:20:19Z", quantity: 2, total: 190, tip: 100, type: "tab"},
@@ -68,7 +59,46 @@ let scatterPlot = dc.scatterPlot('#scatterPlot')
   .symbolSize(20)
   .clipPadding(20)
   .colorAccessor(d => d.value)
+  .colors(d3.scale.category10())
+  .yAxisLabel("Tip")
+  .xAxisLabel("Total")
   .x(d3.scale.linear().domain([0,300]));
+
 scatterPlot.yAxis().ticks(5);
 scatterPlot.xAxis().ticks(5);
+
+
+let bubbleChart = dc.bubbleChart('#bubbleChart')
+  .margins({top :20,bottom:50,left:20,right :20})
+  .dimension(scatterPlotDimension)
+  .group(scatterGroup)
+  .clipPadding(70)
+  .colorAccessor(d => d.key[0])
+  .colors(colorbrewer.RdPu[6])
+  .colorDomain([0,320])
+  .keyAccessor(d => d.key[0])
+  .valueAccessor(d => d.key[1])
+  .radiusValueAccessor(d => d.value)
+  .maxBubbleRelativeSize(0.08)
+  .yAxisLabel("Tip")
+  .xAxisLabel("Total")
+  .renderHorizontalGridLines(true)
+  .renderVerticalGridLines(true)
+  .r(d3.scale.linear().domain([1,6]))
+  .x(d3.scale.linear().domain([0,300]))
+  .y(d3.scale.linear().domain([0,300]));
+
+bubbleChart.yAxis().ticks(5);
+bubbleChart.xAxis().ticks(5);
+
+
+let dataTable = dc.dataTable('#dataTable')
+  .dimension(dateDimension)
+  .showGroups(false)
+  // .size(10)
+  .group(d => d.type)
+  .columns(["date","quantity","total","tip","type"])
+  .sortBy(function(d) {return d.tip})
+  .order(d3.ascending);
+
 dc.renderAll();

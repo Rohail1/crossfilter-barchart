@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Cross Filter Demo</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="dc.min.css">
     <style>
         .graphContainer {
@@ -43,10 +44,23 @@
 
 </div>
 
+<div class="graphContainer ">
+    <h1> Bubble Chart : Total Payment vs Tips </h1>
+    <div id="bubbleChart" class="graph">
+    </div>
+
+</div>
+
+<div class="graphContainer ">
+    <h1> Data Table </h1>
+    <table id="dataTable" class="table table-responsive"></table>
+</div>
+
 
 <script type="application/javascript" src="d3.js"></script>
 <script type="application/javascript" src="crossfilter.js"></script>
 <script type="application/javascript" src="dc.min.js"></script>
+<script src="colorbrewer.js"></script>
 <script type="application/javascript" src="graphs.js"></script>
 
 </body>
